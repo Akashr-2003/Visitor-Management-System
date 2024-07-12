@@ -1,0 +1,166 @@
+<!-- admin_approval.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Approval</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: white;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table-container {
+            max-height: 620px;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        table {
+            margin: 10px 0;
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        th,
+        td {
+            word-wrap: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 0;
+        }
+
+        th {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 2;
+        }
+
+        th:nth-child(1),
+        td:nth-child(1) {
+            width: 4%;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 8%;
+        }
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            width: 6%;
+        }
+
+        th:nth-child(4),
+        td:nth-child(4) {
+            width: 8%;
+        }
+
+        th:nth-child(5),
+        td:nth-child(5) {
+            width: 12%;
+        }
+
+        th:nth-child(6),
+        td:nth-child(6) {
+            width: 13%;
+        }
+
+        th:nth-child(7),
+        td:nth-child(7) {
+            width: 14%;
+        }
+
+        th:nth-child(8),
+        td:nth-child(8) {
+            width: 6%;
+        }
+
+        th:nth-child(9),
+        td:nth-child(9) {
+            width: 5.5%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    {% include 'NavBar.html' %}
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h2>Visitor Approval Requests</h2>
+        </div>
+
+        <div class="table-container">
+            <table class="table table-striped m-0">
+                <thead class="bg-white">
+                    <tr>
+                        <th scope="col">VS-ID</th>
+                        <th scope="col">VS NAME</th>
+                        <th scope="col">VS DATE</th>
+                        <th scope="col">VS PH-NO</th>
+                        <th scope="col">VS MAIL-ID</th>
+                        <th scope="col">VS PURPOSE</th>
+                        <th scope="col">VS REMARKS</th>
+                        <th scope="col">Approve</th>
+                        <th scope="col">Reject</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for visitor in pending_visitors %}
+                    <tr>
+                        <td>{{ visitor.VS_ID }}</td>
+                        <td>{{ visitor.VS_NAME }}</td>
+                        <td>{{ visitor.VS_DATE }}</td>
+                        <td>{{ visitor.VS_PHONENO }}</td>
+                        <td>{{ visitor.VS_MAILID }}</td>
+                        <td>{{ visitor.VS_PURPOSE }}</td>
+                        <td>{{ visitor.VS_REMARKS }}</td>
+                        <td>
+                            <form method="POST" action="{% url 'admin_approve' visitor.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success">Approve</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="POST" action="{% url 'admin_reject' visitor.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- JavaScript dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

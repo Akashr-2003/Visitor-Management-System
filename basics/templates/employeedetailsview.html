@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 0px;
+            /* Adjust this based on your navbar height */
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: white;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table-container {
+            max-height: 620px;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+        
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        table {
+            margin: 10px 0;
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        th,
+        td {
+            word-wrap: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 0;
+        }
+
+        th {
+            position: -webkit-sticky; /* for Safari */
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 2;
+        }
+
+        th:nth-child(1),
+        td:nth-child(1) {
+            width: 5%;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 10%;
+        }
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            width: 10%;
+        }
+
+        th:nth-child(4),
+        td:nth-child(4) {
+            width: 13%;
+        }
+
+        th:nth-child(5),
+        td:nth-child(5) {
+            width: 9%;
+        }
+
+        th:nth-child(6),
+        td:nth-child(6) {
+            width: 8%;
+        }
+
+        th:nth-child(7),
+        td:nth-child(7) {
+            width: 13%;
+        }
+
+        th:nth-child(8),
+        td:nth-child(8) {
+            width: 6.5%;
+        }
+
+        th:nth-child(9),
+        td:nth-child(9) {
+            width: 6%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    {% include 'NavBar.html' %}
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Employee Logs</h2>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addEmployeeModal">
+                    Add Employee
+                </button>
+            </div>
+            {% if result_message %}
+            <div class="alert alert-success" role="alert">
+                {{ result_message }}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="table-container">
+            <table class="table table-striped m-0">
+                <thead class="bg-white">
+                    <tr>
+                        <th scope="col">EMP-ID</th>
+                        <th scope="col">EMP NAME</th>
+                        <th scope="col">EMP COMPANY-ID</th>
+                        <th scope="col">EMP MAIL-ID</th>
+                        <th scope="col">EMP PH-NO</th>
+                        <th scope="col">EMP DOJ</th>
+                        <th scope="col">EMP ROLE NAME</th>
+                        <th scope="col">Update</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for employee in result %}
+                    <tr>
+                        <td>{{ employee.EMP_ID }}</td>
+                        <td>{{ employee.EMP_NAME }}</td>
+                        <td>{{ employee.EMP_COMP_ID }}</td>
+                        <td>{{ employee.EMP_MAILID }}</td>
+                        <td>{{ employee.EMP_PHONENO }}</td>
+                        <td>{{ employee.EMP_DOJ }}</td>
+                        <td>{{ employee.EMP_ROLE_NAME }}</td>
+                        <td>
+                            <button type="button" class="btn btn-warning" data-toggle="modal"
+                                data-target="#updateEmployeeModal{{employee.id}}">Update</button>
+                        </td>
+                        <td>
+                            <a href="/employeedetailsdelete/{{employee.id}}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modals for Update -->
+    {% for employee in result %}
+    <div class="modal fade" id="updateEmployeeModal{{employee.id}}" tabindex="-1" role="dialog"
+        aria-labelledby="updateEmployeeModalLabel{{employee.id}}" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateEmployeeModalLabel{{employee.id}}">Update Employee Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'employeedetailsview_update' employee.id %}">
+
+                        {% csrf_token %}
+                        <input type="hidden" name="employee_id" value="{{ employee.id }}">
+
+                        <div class="form-group">
+                            <label for="textempid">EMPLOYEE-ID:</label>
+                            <input type="text" class="form-control" id="textempid" name="textempid"
+                                value="{{ employee.EMP_ID }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="textempname">EMPLOYEE NAME:</label>
+                            <input type="text" class="form-control" id="textempname" name="textempname"
+                                value="{{ employee.EMP_NAME }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="textempcompid">EMPLOYEE COMPANY-ID:</label>
+                            <input type="text" class="form-control" id="textempcompid" name="textempcompid"
+                                value="{{ employee.EMP_COMP_ID }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="textempmailid">EMPLOYEE MAIL-ID:</label>
+                            <input type="email" class="form-control" id="textempmailid" name="textempmailid"
+                                value="{{ employee.EMP_MAILID }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="textempphoneno">EMPLOYEE PHONE-NO:</label>
+                            <input type="tel" class="form-control" id="textempphoneno" name="textempphoneno"
+                                value="{{ employee.EMP_PHONENO }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="textempdoj">EMPLOYEE DOJ:</label>
+                            <input type="date" class="form-control" id="textempdoj" name="textempdoj"
+                                value="{{ employee.EMP_DOJ }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="textemprolename">EMPLOYEE ROLE-NAME:</label>
+                            <input type="text" class="form-control" id="textemprolename" name="textemprolename"
+                                value="{{ employee.EMP_ROLE_NAME }}">
+                        </div>
+                        <button type="submit" class="btn btn-outline-dark" name="update_employee">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    {% endfor %}
+
+    <!-- Add Employee Modal -->
+    <div class="modal fade" id="addEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="addEmployeeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addEmployeeModalLabel">Add New Employee</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'employeedetailsview' %}">
+
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="addTextEmpId">EMPLOYEE-ID:</label>
+                            <input type="text" class="form-control" id="addTextEmpId" name="textempid">
+                        </div>
+                        <div class="form-group">
+                            <label for="addTextEmpName">EMPLOYEE NAME:</label>
+                            <input type="text" class="form-control" id="addTextEmpName" name="textempname">
+                        </div>
+                        <div class="form-group">
+                            <label for="addTextEmpCompId">EMPLOYEE COMPANY-ID:</label>
+                            <input type="text" class="form-control" id="addTextEmpCompId" name="textempcompid">
+                        </div>
+                        <div class="form-group">
+                            <label for="addTextEmpMailId">EMPLOYEE MAIL-ID:</label>
+                            <input type="email" class="form-control" id="addTextEmpMailId" name="textempmailid">
+                        </div>
+                        <div class="form-group">
+                            <label for="addTextEmpPhoneNo">EMPLOYEE PHONE-NO:</label>
+                            <input type="tel" class="form-control" id="addTextEmpPhoneNo" name="textempphoneno">
+                        </div>
+                        <div class="form-group">
+                            <label for="addTextEmpDoj">EMPLOYEE DOJ:</label>
+                            <input type="date" class="form-control" id="addTextEmpDoj" name="textempdoj">
+                        </div>
+                        <div class="form-group">
+                            <label for="addTextEmpRoleName">EMPLOYEE ROLE-NAME:</label>
+                            <input type="text" class="form-control" id="addTextEmpRoleName" name="textemprolename">
+                        </div>
+                        <button type="submit" class="btn btn-outline-dark" name="add_employee">Add Employee</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,283 @@
+<!-- visitordetailsview.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: white;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table-container {
+            max-height: 620px;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        table {
+            margin: 10px 0;
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        th,
+        td {
+            word-wrap: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 0;
+        }
+
+        th {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 2;
+        }
+
+        th:nth-child(1),
+        td:nth-child(1) {
+            width: 4%;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 8%;
+        }
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            width: 6%;
+        }
+
+        th:nth-child(4),
+        td:nth-child(4) {
+            width: 8%;
+        }
+
+        th:nth-child(5),
+        td:nth-child(5) {
+            width: 12%;
+        }
+
+        th:nth-child(6),
+        td:nth-child(6) {
+            width: 13%;
+        }
+
+        th:nth-child(7),
+        td:nth-child(7) {
+            width: 14%;
+        }
+
+        th:nth-child(8),
+        td:nth-child(8) {
+            width: 6%;
+        }
+
+        th:nth-child(9),
+        td:nth-child(9) {
+            width: 5.5%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    {% include 'NavBar.html' %}
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Visitor Logs</h2>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addVisitorModal">
+                    Add Visitor
+                </button>
+            </div>
+            {% if result_message %}
+            <div class="alert alert-success" role="alert">
+                {{ result_message }}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="table-container">
+            <table class="table table-striped m-0">
+                <thead class="bg-white">
+                    <tr>
+                        <th scope="col">VS-ID</th>
+                        <th scope="col">VS NAME</th>
+                        <th scope="col">VS DATE</th>
+                        <th scope="col">VS PH-NO</th>
+                        <th scope="col">VS MAIL-ID</th>
+                        <th scope="col">VS PURPOSE</th>
+                        <th scope="col">VS REMARKS</th>
+                        <th scope="col">Update</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for visitor in result %}
+                    <tr>
+                        <td>{{ visitor.VS_ID }}</td>
+                        <td>{{ visitor.VS_NAME }}</td>
+                        <td>{{ visitor.VS_DATE }}</td>
+                        <td>{{ visitor.VS_PHONENO }}</td>
+                        <td>{{ visitor.VS_MAILID }}</td>
+                        <td>{{ visitor.VS_PURPOSE }}</td>
+                        <td>{{ visitor.VS_REMARKS }}</td>
+                        <td>
+                            <button type="button" class="btn btn-warning" data-toggle="modal"
+                                data-target="#updateVisitorModal{{visitor.id}}">Update</button>
+                        </td>
+                        <td>
+                            <a href="/visitordetailsdelete/{{visitor.id}}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modals for Update -->
+    {% for visitor in result %}
+    <div class="modal fade" id="updateVisitorModal{{visitor.id}}" tabindex="-1" role="dialog"
+        aria-labelledby="updateVisitorModalLabel{{visitor.id}}" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="POST" action="{% url 'visitordetailsview' %}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateVisitorModalLabel{{visitor.id}}">Update Visitor Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <input type="hidden" name="visitor_id" value="{{ visitor.id }}">
+                        <div class="form-group">
+                            <label for="textvsid">VS-ID</label>
+                            <input type="text" class="form-control" id="textvsid" name="textvsid"
+                                value="{{ visitor.VS_ID }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="textvsname">VS Name</label>
+                            <input type="text" class="form-control" id="textvsname" name="textvsname"
+                                value="{{ visitor.VS_NAME }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="textvsdate">VS Date</label>
+                            <input type="date" class="form-control" id="textvsdate" name="textvsdate"
+                                value="{{ visitor.VS_DATE|date:'Y-m-d' }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="textvsphoneno">VS Phone Number</label>
+                            <input type="text" class="form-control" id="textvsphoneno" name="textvsphoneno"
+                                value="{{ visitor.VS_PHONENO }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="textvsmailid">VS Mail-ID</label>
+                            <input type="email" class="form-control" id="textvsmailid" name="textvsmailid"
+                                value="{{ visitor.VS_MAILID }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="textvspurpose">VS Purpose</label>
+                            <input type="text" class="form-control" id="textvspurpose" name="textvspurpose"
+                                value="{{ visitor.VS_PURPOSE }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="textvsremarks">VS Remarks</label>
+                            <textarea class="form-control" id="textvsremarks" name="textvsremarks"
+                                required>{{ visitor.VS_REMARKS }}</textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" name="update_visitor" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Modal for Add Visitor -->
+    <div class="modal fade" id="addVisitorModal" tabindex="-1" role="dialog" aria-labelledby="addVisitorModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="POST" action="{% url 'visitordetailsview' %}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addVisitorModalLabel">Add New Visitor</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="textvsid">VS-ID</label>
+                            <input type="text" class="form-control" id="textvsid" name="textvsid" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="textvsname">VS Name</label>
+                            <input type="text" class="form-control" id="textvsname" name="textvsname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="textvsdate">VS Date</label>
+                            <input type="date" class="form-control" id="textvsdate" name="textvsdate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="textvsphoneno">VS Phone Number</label>
+                            <input type="text" class="form-control" id="textvsphoneno" name="textvsphoneno" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="textvsmailid">VS Mail-ID</label>
+                            <input type="email" class="form-control" id="textvsmailid" name="textvsmailid" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="textvspurpose">VS Purpose</label>
+                            <input type="text" class="form-control" id="textvspurpose" name="textvspurpose" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="textvsremarks">VS Remarks</label>
+                            <textarea class="form-control" id="textvsremarks" name="textvsremarks" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" name="add_visitor" class="btn btn-primary">Add Visitor</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

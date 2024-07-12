@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisitorMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/home.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <img src="/static/img/logo.png" alt="Logo" class="navbar-logo">
+        <ul class="navbar-list">
+            <li class="navbar-item"><a href="#" id="about-link" class="navbar-link" data-toggle="modal" data-target="#aboutUsModal">About us</a></li>
+            <li class="navbar-item"><a href="#" id="solutions-link" class="navbar-link" data-toggle="modal" data-target="#solutionsModal">Solutions</a></li>
+            <li class="navbar-item"><a href="#" id="contact-link" class="navbar-link" data-toggle="modal" data-target="#contactModal">Contact</a></li>
+            <li class="navbar-item"><a href="{% url 'userlogin' %}" class="login-button navbar-link">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header Content -->
+    <div class="header-content">
+        <h1 class="header-title">The visitor management system that impresses guests while keeping everyone safe.</h1>
+        <p class="header-description">Welcome guests with reliable visitor management system that keeps your workplace safe, compliant, and productive.</p>
+        <a href="{% url 'registration' %}" class="btn btn-secondary btn-lg">Register</a>
+        <!-- Request Visit Button -->
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#requestVisitModal">Request Visit</button>
+    </div>
+
+    <!-- Container -->
+    <div class="container">
+        <div class="column digital">
+            <div class="header digital-header">Digital VMS</div>
+            <ul class="digital-list">
+                <li class="digital-item">Digital Check-Ins: It allows the guests to do contactless check-in eliminating the paperwork.</li>
+                <li class="digital-item">Safe and Secure: Only the concerned authority can access visitor data.</li>
+                <li class="digital-item">OTP Authentication: OTP authentication based check-in.</li>
+                <li class="digital-item">Notifications: Notifies host via SMS/email.</li>
+                <li class="digital-item">Offline Synchronization: Data sync even without internet connectivity.</li>
+            </ul>
+        </div>
+        <div class="column traditional">
+            <div class="header traditional-header">Traditional System</div>
+            <ul class="traditional-list">
+                <li class="traditional-item">Manual Check-Ins: Check-in is on paper and pen-based logbooks.</li>
+                <li class="traditional-item">Non-confidential: Visitor entry system becomes a public document that any guest can seek through.</li>
+                <li class="traditional-item">No Identity Verification: A manual process cannot authenticate the visitor's mobile number.</li>
+                <li class="traditional-item">Complex Process: Informing the host on the visitor's arrival.</li>
+                <li class="traditional-item">No Offline Synchronization: They rely entirely on physical logbooks.</li>
+            </ul>
+        </div>
+    </div>
+    <!-- <div class="main-container">
+        <h1 class="main-title">Ensure Workplace Security and Enhance Visitor Experience</h1>
+        <div class="main-content">
+            <div class="employee-section">
+                <h2 class="section-title">For Employees</h2>
+                <ul class="list-items">
+                    <li class="list-item"><span class="list-icon">🔴</span>Approve/disapprove visitors at the entrance.</li>
+                    <li class="list-item"><span class="list-icon">🔴</span>Send invitations with venue and host details.</li>
+                    <li class="list-item"><span class="list-icon">🔴</span>Switch locations or register yourself.</li>
+                </ul>
+            </div>
+            <div class="visitor-section">
+                <h2 class="section-title">For Visitors</h2>
+                <ul class="list-items">
+                    <li class="list-item"><span class="list-icon">🔴</span>Prompts for signing agreements like NDAs.</li>
+                    <li class="list-item"><span class="list-icon">🔴</span>Customizable badges with important details.</li>
+                    <li class="list-item"><span class="list-icon">🔴</span>Sign in with touchless or QR code registration.</li>
+                </ul>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Footer -->
+    <!-- <footer class="industries-list">
+        Every Industry Requires a Visitor Management System
+        ...
+    </footer> -->
+
+    <!-- About Us Modal -->
+    <div class="modal fade" id="aboutUsModal" tabindex="-1" role="dialog" aria-labelledby="aboutUsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aboutUsModalLabel">About Us</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>We are a dedicated team committed to providing the best solutions for our customers. With years of experience in our field, we understand the challenges you face and aim to provide effective and efficient solutions tailored to your needs.</p>
+                    <p>Our mission is to deliver high-quality products and services that empower our clients to succeed. We believe in building strong relationships with our clients, and our client's success is our success.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Solutions Modal -->
+    <div class="modal fade" id="solutionsModal" tabindex="-1" role="dialog" aria-labelledby="solutionsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="solutionsModalLabel">Solutions</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Our Visitor Management System provides a comprehensive solution for your visitor management needs. It offers features like:</p>
+                    <ul class="solutions-list">
+                        <li class="solutions-item">Digital Check-Ins: It allows the guests to do contactless check-in eliminating the paperwork.</li>
+                        <li class="solutions-item">Safe and Secure: Only the concerned authority can access visitor data.</li>
+                        <li class="solutions-item">OTP Authentication: OTP authentication based check-in.</li>
+                        <li class="solutions-item">Notifications: Notifies host via SMS/email.</li>
+                        <li class="solutions-item">Offline Synchronization: Data sync even without internet connectivity.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contactModalLabel">Contact</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/submit_contact_form" method="POST" class="contact-form">
+                        <div class="form-group">
+                            <label for="contactName">Name:</label>
+                            <input type="text" class="form-control" id="contactName" name="contactName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email:</label>
+                            <input type="email" class="form-control" id="contactEmail" name="contactEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage">Message:</label>
+                            <textarea class="form-control" id="contactMessage" name="contactMessage" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Request Visit Modal -->
+<div class="modal fade" id="requestVisitModal" tabindex="-1" role="dialog" aria-labelledby="requestVisitModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="POST" action="{% url 'home' %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="requestVisitModalLabel">Request a Visit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="textvsid">VS-ID</label>
+                        <input type="text" class="form-control" id="textvsid" name="textvsid" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="textvsname">VS Name</label>
+                        <input type="text" class="form-control" id="textvsname" name="textvsname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="textvsdate">VS Date</label>
+                        <input type="date" class="form-control" id="textvsdate" name="textvsdate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="textvsphoneno">VS Phone Number</label>
+                        <input type="text" class="form-control" id="textvsphoneno" name="textvsphoneno" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="textvsmailid">VS Mail-ID</label>
+                        <input type="email" class="form-control" id="textvsmailid" name="textvsmailid" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="textvspurpose">VS Purpose</label>
+                        <input type="text" class="form-control" id="textvspurpose" name="textvspurpose" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="textvsremarks">VS Remarks</label>
+                        <textarea class="form-control" id="textvsremarks" name="textvsremarks" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="request_visit" class="btn btn-primary">Submit Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/static/javascript/home.js"></script>
+
+</body>
+
+</html>
